@@ -25,95 +25,99 @@ namespace UP01.Pages
 
         private void regButton_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Проверка заполнения всех полей
+            // ПРОВЕРКА 1: Все поля заполнены
             if (string.IsNullOrWhiteSpace(txtbxLog.Text) ||
                 string.IsNullOrWhiteSpace(txtbxFIO.Text) ||
                 string.IsNullOrWhiteSpace(passBxFrst.Password) ||
                 string.IsNullOrWhiteSpace(passBxScnd.Password))
             {
-                MessageBox.Show("Заполните все поля!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Заполните все поля!");
+                return;
             }
 
-            // 2. Проверка на существующий логин
+            // ПРОВЕРКА 2: Логин не занят (оставляем User, как у вас в модели)
             if (Core.Context.User.Any(u => u.Login == txtbxLog.Text))
             {
-                MessageBox.Show("Пользователь с таким логином уже существует!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Пользователь с таким логином уже существует!");
+                return;
             }
 
-            // 3. ПРОВЕРКА ПАРОЛЯ
+            // ПРОВЕРКА 3: Пароли совпадают
+            if (passBxFrst.Password != passBxScnd.Password)
+            {
+                MessageBox.Show("Пароли не совпадают!");
+                return;
+            }
+
+            // ПРОВЕРКА 4, 5 и 6: Комплексная проверка пароля
             string pwd = passBxFrst.Password;
 
-            // Проверка 1: Минимум 6 символов
             if (pwd.Length < 6)
             {
-                MessageBox.Show("Пароль должен содержать минимум 6 символов!", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Пароль должен содержать минимум 6 символов!");
+                return;
             }
 
             bool hasDigit = false;
+            bool hasEnglishLetter = false;
             bool hasInvalidChar = false;
 
             foreach (char c in pwd)
             {
-                if (char.IsDigit(c))
+                if (c >= '0' && c <= '9')
                 {
-                    hasDigit = true;
+                    hasDigit = true; // Нашли цифру
                 }
                 else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
                 {
-                    // Английская буква - OK
+                    hasEnglishLetter = true; // Нашли английскую букву
                 }
                 else
                 {
-                    // Русский символ или спецсимвол
-                    hasInvalidChar = true;
+                    hasInvalidChar = true; // Нашли русскую букву, пробел или спецсимвол
                     break;
                 }
             }
 
-            // Проверка 2: Только английская раскладка
+            // Теперь мы проверяем каждое условие отдельно и прерываем выполнение (return)
             if (hasInvalidChar)
             {
-                MessageBox.Show("Используйте только английскую раскладку (латинские буквы и цифры)!", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Пароль должен содержать ТОЛЬКО английские буквы и цифры!");
+                return;
             }
 
-            // Проверка 3: Хотя бы одна цифра
             if (!hasDigit)
             {
-                MessageBox.Show("Пароль должен содержать хотя бы одну цифру!", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Пароль должен содержать хотя бы одну цифру!");
+                return;
             }
 
-            // 4. Проверка совпадения паролей
-            if (passBxFrst.Password != passBxScnd.Password)
+            if (!hasEnglishLetter)
             {
-                MessageBox.Show("Пароли не совпадают!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // ВАЖНО: прерываем выполнение!
+                MessageBox.Show("Пароль должен содержать хотя бы одну английскую букву!");
+                return;
             }
 
-            // 5. Если все проверки пройдены - сохраняем
+            // ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ - СОХРАНЯЕМ
             try
             {
                 var newUser = new User
                 {
                     FIO = txtbxFIO.Text,
                     Login = txtbxLog.Text,
-                    Password = GetHash(passBxFrst.Password), // Хешируем!
+                    Password = GetHash(passBxFrst.Password),
                     Role = (comboBxRole.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "User"
                 };
 
                 Core.Context.User.Add(newUser);
                 Core.Context.SaveChanges();
 
-                MessageBox.Show("Пользователь успешно зарегистрирован!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Пользователь успешно зарегистрирован!");
                 NavigationService?.GoBack();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка сохранения: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ошибка сохранения: " + ex.Message);
             }
         }
     }
