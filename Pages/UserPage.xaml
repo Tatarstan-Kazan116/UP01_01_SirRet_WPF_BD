@@ -1,0 +1,26 @@
+﻿<Page x:Class="UP01.Pages.UserPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Кабинет пользователя">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0" Margin="5">
+            <TextBlock Text="Поиск по ФИО:" VerticalAlignment="Center" Margin="5"/>
+            <TextBox x:Name="TbFilter" Width="150" TextChanged="TbFilter_TextChanged"/>
+            <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="15,5,5,5"/>
+            <ComboBox x:Name="CbSort" Width="150" SelectionChanged="CbSort_SelectionChanged">
+                <ComboBoxItem Content="По возрастанию" IsSelected="True"/>
+                <ComboBoxItem Content="По убыванию"/>
+            </ComboBox>
+            <CheckBox x:Name="ChbAdmin" Content="Только админы" VerticalAlignment="Center" Margin="15,0,0,0" Checked="ChbAdmin_Changed" Unchecked="ChbAdmin_Changed"/>
+            <Button Content="Сбросить" Click="BtnClear_Click"/>
+        </WrapPanel>
+        <DataGrid x:Name="DgUsers" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FIO}" Width="*"/>
+                <DataGridTextColumn Header="Роль" Binding="{Binding Role}" Width="100"/>
+                <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

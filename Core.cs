@@ -8,6 +8,6 @@ namespace UP01
 {
     internal class Core
     {
-        public static UP01_CarServiceEntities Context = new UP01_CarServiceEntities();
+        public static UP01_CarServiceEntities1 Context = new UP01_CarServiceEntities1();
     }
 }

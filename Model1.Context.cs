@@ -13,10 +13,10 @@ namespace UP01
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class UP01_CarServiceEntities : DbContext
+    public partial class UP01_CarServiceEntities1 : DbContext
     {
-        public UP01_CarServiceEntities()
-            : base("name=UP01_CarServiceEntities")
+        public UP01_CarServiceEntities1()
+            : base("name=UP01_CarServiceEntities1")
         {
         }
     

@@ -10,7 +10,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientID" Type="int" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
           <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LicensePlate" Type="nvarchar" MaxLength="15" Nullable="false" />
@@ -45,8 +45,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryID" Type="int" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Num" Type="int" Nullable="false" />
@@ -73,8 +74,8 @@
           <Property Name="FIO" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Photo" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK__Car__ClientID__412EB0B6">
-          <End Role="Client" Type="Self.Client" Multiplicity="0..1">
+        <Association Name="FK_Car_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Car" Type="Self.Car" Multiplicity="*" />
@@ -87,8 +88,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment__Categor__3B75D760">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+        <Association Name="FK_Payment_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
@@ -99,8 +100,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment__UserID__3C69FB99">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+        <Association Name="FK_Payment_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -119,15 +132,19 @@
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Car__ClientID__412EB0B6" Association="Self.FK__Car__ClientID__412EB0B6">
+          <AssociationSet Name="FK_Car_Client" Association="Self.FK_Car_Client">
             <End Role="Client" EntitySet="Client" />
             <End Role="Car" EntitySet="Car" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment__Categor__3B75D760" Association="Self.FK__Payment__Categor__3B75D760">
+          <AssociationSet Name="FK_Payment_Category" Association="Self.FK_Payment_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment__UserID__3C69FB99" Association="Self.FK__Payment__UserID__3C69FB99">
+          <AssociationSet Name="FK_Payment_Employee" Association="Self.FK_Payment_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
             <End Role="User" EntitySet="User" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
@@ -142,11 +159,11 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
           <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LicensePlate" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK__Car__ClientID__412EB0B6" FromRole="Car" ToRole="Client" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Car_Client" FromRole="Car" ToRole="Client" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -154,7 +171,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Payment" Relationship="Self.FK__Payment__Categor__3B75D760" FromRole="Category" ToRole="Payment" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK_Payment_Category" FromRole="Category" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
@@ -164,7 +181,7 @@
           <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Car" Relationship="Self.FK__Car__ClientID__412EB0B6" FromRole="Client" ToRole="Car" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Car_Client" FromRole="Client" ToRole="Car" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -174,20 +191,23 @@
           <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Salary" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK_Payment_Employee" FromRole="Employee" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryID" Type="Int32" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Num" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="Self.FK__Payment__Categor__3B75D760" FromRole="Payment" ToRole="Category" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Payment__UserID__3C69FB99" FromRole="Payment" ToRole="User" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Payment_Category" FromRole="Payment" ToRole="Category" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Payment_Employee" FromRole="Payment" ToRole="Employee" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Payment_User" FromRole="Payment" ToRole="User" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -209,10 +229,10 @@
           <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Photo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Payment" Relationship="Self.FK__Payment__UserID__3C69FB99" FromRole="User" ToRole="Payment" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK_Payment_User" FromRole="User" ToRole="Payment" />
         </EntityType>
-        <Association Name="FK__Car__ClientID__412EB0B6">
-          <End Role="Client" Type="Self.Client" Multiplicity="0..1">
+        <Association Name="FK_Car_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Car" Type="Self.Car" Multiplicity="*" />
@@ -225,8 +245,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment__Categor__3B75D760">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+        <Association Name="FK_Payment_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
@@ -237,8 +257,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment__UserID__3C69FB99">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+        <Association Name="FK_Payment_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -249,7 +281,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="UP01_CarServiceEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="UP01_CarServiceEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Car" EntityType="Self.Car" />
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Client" EntityType="Self.Client" />
@@ -257,15 +289,19 @@
           <EntitySet Name="Payment" EntityType="Self.Payment" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="FK__Car__ClientID__412EB0B6" Association="Self.FK__Car__ClientID__412EB0B6">
+          <AssociationSet Name="FK_Car_Client" Association="Self.FK_Car_Client">
             <End Role="Client" EntitySet="Client" />
             <End Role="Car" EntitySet="Car" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment__Categor__3B75D760" Association="Self.FK__Payment__Categor__3B75D760">
+          <AssociationSet Name="FK_Payment_Category" Association="Self.FK_Payment_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment__UserID__3C69FB99" Association="Self.FK__Payment__UserID__3C69FB99">
+          <AssociationSet Name="FK_Payment_Employee" Association="Self.FK_Payment_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
             <End Role="User" EntitySet="User" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
@@ -275,7 +311,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище UP01_CarServiceModelContainer" CdmEntityContainer="UP01_CarServiceEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище UP01_CarServiceModelContainer" CdmEntityContainer="UP01_CarServiceEntities1">
           <EntitySetMapping Name="Car">
             <EntityTypeMapping TypeName="UP01_CarServiceModel.Car">
               <MappingFragment StoreEntitySet="Car">
@@ -321,6 +357,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Num" ColumnName="Num" />

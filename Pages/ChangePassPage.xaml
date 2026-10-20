@@ -1,0 +1,16 @@
+﻿<Page x:Class="UP01.Pages.ChangePassPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Смена пароля">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
+        <StackPanel>
+            <TextBlock Text="Смена пароля" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            <TextBlock Text="Логин"/>
+            <TextBox x:Name="TbLogin"/>
+            <TextBlock Text="Текущий пароль"/>
+            <PasswordBox x:Name="PbOld"/>
+            <TextBlock Text="Новый пароль"/>
+            <PasswordBox x:Name="PbNew"/>
+            <TextBlock Text="Подтверждение"/>
+            <PasswordBox x:Name="PbConf"/>
+            <Button Content="Сохранить" Click="BtnSave_Click" Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>

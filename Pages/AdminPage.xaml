@@ -1,0 +1,13 @@
+﻿<Page x:Class="UP01.Pages.AdminPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Панель администратора">
+    <Grid>
+        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Пользователи" Tag="User" Click="BtnNav_Click"/>
+            <Button Content="Клиенты" Tag="Client" Click="BtnNav_Click"/>
+            <Button Content="Автомобили" Tag="Car" Click="BtnNav_Click"/>
+            <Button Content="Сотрудники" Tag="Employee" Click="BtnNav_Click"/>
+            <Button Content="Категории" Tag="Category" Click="BtnNav_Click"/>
+            <Button Content="Заказ-наряды" Tag="Payment" Click="BtnNav_Click"/>
+            <Button Content="Диаграммы и Экспорт" Tag="Diagramm" Click="BtnNav_Click" Background="#4CAF50"/>
+        </WrapPanel>
+    </Grid>
+</Page>

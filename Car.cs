@@ -15,7 +15,7 @@ namespace UP01
     public partial class Car
     {
         public int ID { get; set; }
-        public Nullable<int> ClientID { get; set; }
+        public int ClientID { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
         public string LicensePlate { get; set; }
