@@ -68,11 +68,27 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- Стили для DataGrid -->
     <Style TargetType="DataGrid">
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="SelectionMode" Value="Extended"/>
+        <Setter Property="Background" Value="{DynamicResource InputBgBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="GridLinesVisibility" Value="All"/>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
+    <Style TargetType="DataGridCell">
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
+    <Style TargetType="DataGridRow">
         <Setter Property="Background" Value="{DynamicResource InputBgBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
     </Style>

@@ -47,7 +47,7 @@ namespace UP01.Pages
 
             MessageBox.Show("Успешный вход!");
 
-            // НАВИГАЦИЯ В ЗАВИСИМОСТИ ОТ РОЛИ
+            // Навигация в зависимости от роли
             if (user.Role == "Admin")
             {
                 var mainWindow = Application.Current.MainWindow as MainWindow;

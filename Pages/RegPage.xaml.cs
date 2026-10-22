@@ -25,7 +25,7 @@ namespace UP01.Pages
 
         private void regButton_Click(object sender, RoutedEventArgs e)
         {
-            // ПРОВЕРКА 1: Все поля заполнены
+            // Проверка 1: Все поля заполнены
             if (string.IsNullOrWhiteSpace(txtbxLog.Text) ||
                 string.IsNullOrWhiteSpace(txtbxFIO.Text) ||
                 string.IsNullOrWhiteSpace(passBxFrst.Password) ||
@@ -35,21 +35,21 @@ namespace UP01.Pages
                 return;
             }
 
-            // ПРОВЕРКА 2: Логин не занят (оставляем User, как у вас в модели)
+            // Проверка 2: Логин не занят
             if (Core.Context.User.Any(u => u.Login == txtbxLog.Text))
             {
                 MessageBox.Show("Пользователь с таким логином уже существует!");
                 return;
             }
 
-            // ПРОВЕРКА 3: Пароли совпадают
+            // Проверка 3: Пароли совпадают
             if (passBxFrst.Password != passBxScnd.Password)
             {
                 MessageBox.Show("Пароли не совпадают!");
                 return;
             }
 
-            // ПРОВЕРКА 4, 5 и 6: Комплексная проверка пароля
+            
             string pwd = passBxFrst.Password;
 
             if (pwd.Length < 6)
@@ -79,7 +79,6 @@ namespace UP01.Pages
                 }
             }
 
-            // Теперь мы проверяем каждое условие отдельно и прерываем выполнение (return)
             if (hasInvalidChar)
             {
                 MessageBox.Show("Пароль должен содержать ТОЛЬКО английские буквы и цифры!");
@@ -97,8 +96,9 @@ namespace UP01.Pages
                 MessageBox.Show("Пароль должен содержать хотя бы одну английскую букву!");
                 return;
             }
+            
 
-            // ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ - СОХРАНЯЕМ
+            // Все проверки пройдены - сохранение
             try
             {
                 var newUser = new User

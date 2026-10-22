@@ -34,10 +34,9 @@ namespace UP01.Pages
                 return;
             }
 
-            // 3. ПРОВЕРКА ПАРОЛЯ
+            // 3. Проверка пароля
             if (!string.IsNullOrWhiteSpace(PbPass.Password))
             {
-                // Если пароль ввели, проверяем его по правилам
                 string pwd = PbPass.Password;
 
                 if (pwd.Length < 6)
@@ -47,13 +46,24 @@ namespace UP01.Pages
                 }
 
                 bool hasDigit = false;
+                bool hasEnglishLetter = false;
                 bool hasInvalidChar = false;
 
                 foreach (char c in pwd)
                 {
-                    if (char.IsDigit(c)) hasDigit = true;
-                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) { }
-                    else { hasInvalidChar = true; break; }
+                    if (c >= '0' && c <= '9')
+                    {
+                        hasDigit = true; // Нашли цифру
+                    }
+                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+                    {
+                        hasEnglishLetter = true; // Нашли английскую букву
+                    }
+                    else
+                    {
+                        hasInvalidChar = true; // Нашли русскую букву, пробел или спецсимвол
+                        break;
+                    }
                 }
 
                 if (hasInvalidChar)
@@ -68,7 +78,13 @@ namespace UP01.Pages
                     return;
                 }
 
-                // Хешируем новый пароль
+                if (!hasEnglishLetter)
+                {
+                    MessageBox.Show("Ошибка: Пароль должен содержать хотя бы одну английскую букву.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Хешируем новый пароль, если он прошел все проверки
                 using (var h = System.Security.Cryptography.SHA1.Create())
                 {
                     _user.Password = string.Concat(h.ComputeHash(System.Text.Encoding.UTF8.GetBytes(pwd)).Select(x => x.ToString("X2")));
@@ -77,7 +93,7 @@ namespace UP01.Pages
             else
             {
                 // Если поле пароля пустое
-                if (_user.ID == 0) // Это НОВЫЙ пользователь
+                if (_user.ID == 0) // Это новый пользователь
                 {
                     MessageBox.Show("Ошибка: Пароль обязателен для нового пользователя!", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;

@@ -7,8 +7,8 @@
             <TextBlock Text="Пароль"/>
             <PasswordBox x:Name="PbPassword" ToolTip="Введите пароль"/>
             <Button Content="Войти" Click="BtnLogin_Click" Margin="0,20,0,10"/>
-            <Button Content="Регистрация" Click="BtnReg_Click"/>
-            <Button Content="Смена пароля" Click="BtnChangePass_Click"/>
+            <Button Content="Регистрация" Click="BtnReg_Click" Margin="0,5,0,10"/>
+            <Button Content="Смена пароля" Click="BtnChangePass_Click" Margin="0,5,0,10"/>
         </StackPanel>
         <StackPanel x:Name="CaptchaPanel" Visibility="Hidden">
             <TextBlock Text="Введите капчу:" FontSize="18" HorizontalAlignment="Center"/>

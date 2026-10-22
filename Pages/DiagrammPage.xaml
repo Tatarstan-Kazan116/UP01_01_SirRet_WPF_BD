@@ -18,7 +18,6 @@
             <Button Content="Экспорт в Excel" Click="BtnExcel_Click" Background="#4CAF50" Margin="5"/>
         </WrapPanel>
 
-        <!-- Пустой WindowsFormsHost — Chart добавим через C# -->
         <wf:WindowsFormsHost x:Name="WfhChart" Grid.Row="1" Margin="5"/>
     </Grid>
 </Page>

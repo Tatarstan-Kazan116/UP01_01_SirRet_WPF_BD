@@ -11,28 +11,27 @@
 
         <!-- Панель фильтров -->
         <WrapPanel Grid.Row="0" Margin="5" Orientation="Horizontal">
-            <TextBlock Text="Поиск по ФИО:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="TbFilter" Width="150" TextChanged="TbFilter_TextChanged" Margin="5"/>
+            <TextBlock Text="Поиск по названию:" VerticalAlignment="Center" Margin="5"/>
+            <TextBox x:Name="TbFilter" Width="200" TextChanged="TbFilter_TextChanged" Margin="5"
+                     ToolTip="Введите название категории для поиска"/>
 
             <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="15,5,5,5"/>
-            <ComboBox x:Name="CbSort" Width="150" SelectionChanged="CbSort_SelectionChanged" Margin="5">
+            <ComboBox x:Name="CbSort" Width="180" SelectionChanged="CbSort_SelectionChanged" Margin="5">
                 <ComboBoxItem Content="По возрастанию" IsSelected="True"/>
                 <ComboBoxItem Content="По убыванию"/>
             </ComboBox>
 
-            <CheckBox x:Name="ChbAdmin" Content="Только админы" 
-                      VerticalAlignment="Center" Margin="15,0,0,0" 
-                      Checked="ChbAdmin_Changed" Unchecked="ChbAdmin_Changed"/>
-
-            <Button Content="Сбросить" Click="BtnClear_Click" Margin="15,0,0,0"/>
+            <Button Content="Сбросить" Click="BtnClear_Click" Margin="15,0,0,0"
+                    ToolTip="Сбросить все фильтры"/>
         </WrapPanel>
 
-        <!-- Таблица пользователей -->
-        <DataGrid x:Name="DgUsers" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Margin="5">
+        <!-- Таблица категорий -->
+        <DataGrid x:Name="DgCategories" Grid.Row="1" AutoGenerateColumns="False" 
+                  IsReadOnly="True" Margin="5"
+                  ToolTip="Список категорий услуг автосервиса">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding FIO}" Width="*"/>
-                <DataGridTextColumn Header="Роль" Binding="{Binding Role}" Width="100"/>
-                <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="100"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="60"/>
+                <DataGridTextColumn Header="Название категории" Binding="{Binding Name}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
